@@ -42,14 +42,72 @@ public class UsuarioSeguroAvanzado {
     }
 
     public boolean autenticar(String passwordIngresada) {
-        return false;
+        if (bloqueado) {
+            return false;
+        }
+
+        if (password.equals(passwordIngresada)) {
+            intentosFallidos = 0;
+            accesoExitoso = true;
+            return true;
+        } else {
+            intentosFallidos++;
+
+            if (intentosFallidos >= maxIntentos) {
+                bloqueado = true;
+            }
+
+            return false;
+        }
     }
 
     public void reiniciarAcceso() {
-
+        intentosFallidos = 0;
+        bloqueado = false;
     }
 
     public boolean cambiarPassword(String actual, String nueva) {
-        return false;
+        if (bloqueado) {
+            return false;
+        }
+
+        if (!password.equals(actual)) {
+            return false;
+        }
+
+        if (!validarPassword(nueva)) {
+            return false;
+        }
+
+        password = nueva;
+        return true;
+    }
+
+    private boolean validarPassword(String nueva) {
+        if (nueva == null || nueva.length() < 8) {
+            return false;
+        }
+
+        boolean tieneMayuscula = false;
+        boolean tieneMinuscula = false;
+        boolean tieneNumero = false;
+
+        for (int i = 0; i < nueva.length(); i++) {
+            char caracter = nueva.charAt(i);
+
+            if (Character.isUpperCase(caracter)) {
+                tieneMayuscula = true;
+            }
+
+            if (Character.isLowerCase(caracter)) {
+                tieneMinuscula = true;
+            }
+
+            if (Character.isDigit(caracter)) {
+                tieneNumero = true;
+            }
+        }
+
+        return tieneMayuscula && tieneMinuscula && tieneNumero;
     }
 }
