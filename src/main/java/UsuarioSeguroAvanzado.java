@@ -1,3 +1,5 @@
+// PON TU PACKAGE AQUÍ SI LOS TESTS LO TIENEN (Ej: package evaluacionprog1;)
+
 public class UsuarioSeguroAvanzado {
 
     private String username;
@@ -83,7 +85,8 @@ public class UsuarioSeguroAvanzado {
         return true;
     }
 
-    private boolean validarPassword(String nueva) {
+    // AQUI ESTABA EL ERROR PRINCIPAL: Debe ser public para que el test lo encuentre
+    public boolean validarPassword(String nueva) {
         if (nueva == null || nueva.length() < 8) {
             return false;
         }
